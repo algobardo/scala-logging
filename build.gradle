@@ -1,0 +1,55 @@
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'scala'
+
+
+group = 'algobardo'
+version = 1.0
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+
+dependencies {
+	compile 'org.scala-lang:scala-library:2.11.+'
+    compile 'org.slf4j:slf4j-simple:1.7.12'
+    compile 'org.json4s:json4s-jackson_2.11:3.2.11'
+    compile 'org.json4s:json4s-native_2.11:3.2.11'
+    compile 'com.github.scopt:scopt_2.11:3.3.0'
+    compile 'pl.project13.scala:rainbow_2.11:0.2'
+    compile 'com.github.nikita-volkov:sext:0.2.4'
+}
+
+
+/* To speed-up compilation using a daemon */
+compileScala {
+    scalaCompileOptions.useCompileDaemon = true
+
+    // optionally specify host and port of the daemon:
+    scalaCompileOptions.daemonServer = "localhost:4243"
+
+    scalaCompileOptions.additionalParameters = ['-unchecked', '-deprecation', '-feature']
+}
+
+
+/* To have incremental compilation */
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.useAnt = false
+}
+
+/* To generate the gradle wrapper */
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
+
